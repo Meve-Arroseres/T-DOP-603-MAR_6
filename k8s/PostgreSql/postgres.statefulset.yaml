@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres-statefulset
+  namespace: default
+  labels:
+    app: postgres
+spec:
+  replicas: 1
+  selector: 
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:18
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: "pg-secrets-username"
+              key: "username"
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: "pg-secrets"
+              key: "password"
+        - name: DB_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: configmap-postgres
+              key: database
+        - name: DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: configmap-postgres
+              key: database_host
+        - name: DB_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: configmap-postgres
+              key: database_port
+        restartPolicy: Always
