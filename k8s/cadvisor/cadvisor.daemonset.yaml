@@ -19,12 +19,7 @@ spec:
         image: gcr.io/cadvisor/cadvisor:latest
         ports:
         - containerPort: 8080
-      restartPolicy: Always
-      tolerations:
-      - operator: "Exists"
-        effect: "NoSchedule"
-      - operator: "Exists"
-        effect: "NoExecute"  
+      restartPolicy: Always  
     
   
       
