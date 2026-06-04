@@ -4,6 +4,6 @@ metadata:
   name: configmap-postgres
   namespace: default
 data:
-  database: "mydb"
+  database: "postgres"
   database_host: "postgres-service"
   database_port: "5432"
