@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: configmap-redis
+  namespace: default
+  labels:
+    app: redis
+data:
+  REDIS_HOST: redis
+  REDIS_PORT: "6379"
