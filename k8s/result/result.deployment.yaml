@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: result
+  namespace: default
+  labels:
+    app: result
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: result
+  template:
+    metadata:
+      labels:
+        app: result
+    spec:
+      containers:
+        - name: result
+          image: epitechcontent/t-dop-600-result:k8s
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              memory: "128M"
+          env:
+            - name: POSTGRES_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: configmap-postgres
+                  key: database_host
+            - name: POSTGRES_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: configmap-postgres
+                  key: database_port
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: configmap-postgres
+                  key: database
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: pg-secrets-username
+                  key: username
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: pg-secrets
+                  key: password
