@@ -17,11 +17,11 @@ spec:
     spec:
       containers:
       - name: postgres
-        image: postgres:18
+        image: postgres:9.6
         ports:
         - containerPort: 5432
         env:
-        - name: POSTGRES_USERNAME
+        - name: POSTGRES_USER
           valueFrom:
             secretKeyRef:
               name: "pg-secrets-username"
@@ -47,3 +47,10 @@ spec:
               name: configmap-postgres
               key: database_port
         restartPolicy: Always
+        volumeMounts:                          # ← dans le container
+          - name: postgres-storage
+            mountPath: /var/lib/postgresql/data
+      volumes:                                 # ← au niveau du pod (même niveau que containers)
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: postgres-pvc
