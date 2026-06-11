@@ -19,11 +19,11 @@ spec:
       containers:
         - name: cadvisor
           image: gcr.io/cadvisor/cadvisor:latest
+          imagePullPolicy: IfNotPresent
           securityContext:
             privileged: true
           ports:
             - containerPort: 8080
-              hostPort: 8080
           volumeMounts:
             - name: rootfs
               mountPath: /rootfs
