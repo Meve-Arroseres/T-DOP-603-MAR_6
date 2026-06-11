@@ -13,16 +13,34 @@ spec:
     metadata:
       labels:
         app: cadvisor
-    spec: 
+    spec:
+      automountServiceAccountToken: false
+      restartPolicy: Always
       containers:
-      - name: cadvisor
-        image: gcr.io/cadvisor/cadvisor:latest
-        ports:
-        - containerPort: 8080
-      restartPolicy: Always  
-    
-  
-      
-
-
-  
+        - name: cadvisor
+          image: gcr.io/cadvisor/cadvisor:latest
+          securityContext:
+            privileged: true
+          ports:
+            - containerPort: 8080
+              hostPort: 8080
+          volumeMounts:
+            - name: rootfs
+              mountPath: /rootfs
+              readOnly: true
+            - name: var-run
+              mountPath: /var/run
+              readOnly: true
+            - name: sys
+              mountPath: /sys
+              readOnly: true
+      volumes:
+        - name: rootfs
+          hostPath:
+            path: /
+        - name: var-run
+          hostPath:
+            path: /var/run
+        - name: sys
+          hostPath:
+            path: /sys
