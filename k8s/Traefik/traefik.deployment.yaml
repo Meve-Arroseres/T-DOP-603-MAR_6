@@ -15,14 +15,16 @@ spec:
       labels:
         app: traefik
     spec:
+      restartPolicy: Always
       serviceAccountName: traefik-account
       containers:
         - name: traefik
           image: traefik:2.7
           args:
             - --api.insecure=true
-            - --providers.kubernetesingress
+            - --entrypoints.web.address=:80
+            - --providers.kubernetesingress=true
+            - --providers.kubernetesingress.ingressclass=traefik
           ports:
             - containerPort: 80
             - containerPort: 8080
-          restartPolicy: Always

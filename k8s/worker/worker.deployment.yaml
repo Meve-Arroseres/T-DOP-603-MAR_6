@@ -15,12 +15,10 @@ spec:
       labels:
         app: worker
     spec:
+      restartPolicy: Always
       containers:
         - name: worker
           image: epitechcontent/t-dop-600-worker:k8s
-          resources:
-            limits:
-              memory: "256M"
           env:
             - name: REDIS_HOST
               valueFrom:
@@ -52,3 +50,6 @@ spec:
                 secretKeyRef:
                   name: pg-secrets
                   key: password
+          resources:
+            limits:
+              memory: "256Mi"

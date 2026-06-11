@@ -15,14 +15,12 @@ spec:
       labels:
         app: result
     spec:
+      restartPolicy: Always
       containers:
         - name: result
           image: epitechcontent/t-dop-600-result:k8s
           ports:
             - containerPort: 80
-          resources:
-            limits:
-              memory: "128M"
           env:
             - name: POSTGRES_HOST
               valueFrom:
@@ -49,3 +47,6 @@ spec:
                 secretKeyRef:
                   name: pg-secrets
                   key: password
+          resources:
+            limits:
+              memory: "128Mi"
